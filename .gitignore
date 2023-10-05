@@ -1,0 +1,35 @@
+# byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+.idea
+workspace.xml
+.env
+# media/
+
+# tests and coverage
+*.pytest_cache
+.coverage
+
+# database & logs
+*.db
+*.log
+
+db.sqlite3
+
+# venv
+env
+venv
+
+# other
+.DS_Store
+
+# javascript
+package-lock.json
+
+staticfiles/*
+!staticfiles/.gitkeep
+
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
