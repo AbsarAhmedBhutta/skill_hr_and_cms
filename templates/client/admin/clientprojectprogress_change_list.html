@@ -1,10 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "admin/change_list.html" %}
+{% load i18n static %}
+
+{% block content %}
+    <div id="content-main">
+        <table{% if cl.opts.admin_order_field %} id="result_list"{% endif %} class="listing">
+            <thead>
+                <tr>
+                    <th class="column-client_project">{% trans 'Client Project' %}</th>
+                    <th class="column-date">{% trans 'Date' %}</th>
+                    <th class="column-task">{% trans 'Task' %}</th>
+                    <th class="column-work_done">{% trans 'Work Done (%)' %}</th>
+                    <th class="column-completed_by">{% trans 'Completed by' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr class="{% cycle 'row1' 'row2' %}">
+                    <td>{{ item.client_project }}</td>
+                    <td>{{ item.date }}</td>
+                    <td>{{ item.task }}</td>
+                    <td>
+                        <div class="progress-button">
+                            <button class="btn btn-info" style="font-size: {{ item.work_done }}px;">{{ item.work_done }}%</button>
+                        </div>
+                    </td>
+                    <td>{{ item.completed_by }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -7,6 +7,9 @@ from django.contrib.auth.models import User
 
 class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=264, null=True, blank=True)
+    father_name = models.CharField(max_length=264, null=True, blank=True)
+    address = models.CharField(max_length=264, null=True, blank=True)
     email = models.EmailField(unique=True)
 
     def __str__(self):
@@ -15,7 +18,7 @@ class Client(models.Model):
 
 class ClientProjectProgress(models.Model):
     client_project = models.CharField(max_length=264)
-    date = models.DateField()
+    date = models.DateField(auto_now_add=True)
     task = models.CharField(max_length=264)
     work_done = models.IntegerField()
     completed_by = models.CharField(max_length=264, null=True, blank=True)
