@@ -22,6 +22,9 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', ] + env('ALLOWED_HOSTS', default="127
 
 INSTALLED_APPS = [
     'jazzmin',
+    'client',
+    'employee',
+    'project',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
