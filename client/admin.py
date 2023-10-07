@@ -19,14 +19,30 @@ class ClientProjectProgressAdmin(admin.ModelAdmin):
         max_work_done = 100  # Assuming 'work_done' is a percentage value, so the maximum is 100%
         work_done_percentage = min(obj.work_done, max_work_done)  # Ensure it doesn't exceed 100%
 
-        # Format the progress bar HTML with the percentage symbol and use mark_safe
-        progress_bar = '<div class="progress">' \
-                       '<div class="progress-bar" style="width:;">{:.2f}%</div>' \
-                       '</div>'.format(work_done_percentage, work_done_percentage)
+        # Determine the color based on the percentage range
+        if work_done_percentage < 30:
+            color = 'red'
+        elif work_done_percentage < 50:
+            color = 'yellow'
+        elif work_done_percentage < 80:
+            color = 'orange'
+        else:
+            color = 'green'
 
-        return mark_safe(progress_bar)
+        # Determine the direction of the progress bar (left to right or right to left)
+        if work_done_percentage < 50:
+            progress_direction = 'left'
+        else:
+            progress_direction = 'right'
 
-    work_done_progress.short_description = 'Work Done (%)'  # Column header in the admin
+        # Format the progress bar HTML with inline style to change the color and direction
+        progress_bar = f'<div class="progress">'
+        progress_bar += f'<div class="progress-bar" style="width: {work_done_percentage}%; background-color: {color}; float: {progress_direction};">{work_done_percentage:.2f}%</div>'
+        progress_bar += f'</div>'
+
+        return format_html(progress_bar)
+
+    work_done_progress.short_description = 'Work Done (%)'  # Column header in the admin list display
 
 
 @admin.register(Budget)

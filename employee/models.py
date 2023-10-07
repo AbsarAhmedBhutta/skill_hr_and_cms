@@ -32,4 +32,4 @@ class TaskSubmission(models.Model):
     completed_by = models.CharField(max_length=264, null=True, blank=True)
 
     def __str__(self):
-        return f'{self.task_assignment}|{self.submission_date}|{self.work_done}'
+        return f'{self.task_assignment}|{self.submission_date}|{self.work_done_in_percentage}'

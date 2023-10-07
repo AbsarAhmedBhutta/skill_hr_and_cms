@@ -35,11 +35,11 @@ class TaskSubmissionAdmin(admin.ModelAdmin):
             date=submission_date,
             task=task_name,
             completed_by=request.user.username,  # Use the username
-            work_done=obj.work_done
+            work_done=obj.work_done_in_percentage
         )
 
         # Update the 'work_done' field, whether the entry was created or not
-        client_project_progress.work_done = obj.work_done
+        client_project_progress.work_done = obj.work_done_in_percentage
         client_project_progress.save()
 
         super().save_model(request, obj, form, change)
