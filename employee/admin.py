@@ -1,18 +1,36 @@
 from django.contrib import admin
 
 from client.models import ClientProjectProgress
-from .models import Employee, TaskAssignment, TaskSubmission
+from .form import TaskAdminForm
+from .models import Employee, TaskAssignment, TaskSubmission, Task
+
+
+class TaskAssignmentInline(admin.TabularInline):
+    model = TaskAssignment
+    extra = 1
 
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
-    list_display = ('user',)
+    list_display = ('user', 'name')
+    inlines = [TaskAssignmentInline]
 
 
-@admin.register(TaskAssignment)
-class TaskAssignmentAdmin(admin.ModelAdmin):
-    list_display = ('employee', 'task', 'is_completed')
-    list_filter = ('employee', 'task', 'is_completed')
+from django.contrib import admin
+from .models import Task
+
+
+@admin.register(Task)
+class TaskAdmin(admin.ModelAdmin):
+    list_display = ('project', 'name', 'is_completed')
+    list_filter = ('project', 'is_completed')
+    form = TaskAdminForm  # Use the custom form
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        employee = form.cleaned_data.get('employee')
+        if employee:
+            TaskAssignment.objects.create(employee=employee, task=obj)
 
 
 @admin.register(TaskSubmission)

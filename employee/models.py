@@ -1,6 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
-from project.models import Task  # Import Task from the projects app
+from project.models import Project  # Import Task from the projects app
+
+
+class Task(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    name = models.CharField(max_length=264)
+    description = models.TextField()
+    is_completed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.project}|{self.name}'
 
 
 class Employee(models.Model):
