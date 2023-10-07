@@ -29,17 +29,16 @@ class TaskSubmissionAdmin(admin.ModelAdmin):
         submission_date = obj.submission_date
         task_name = obj.task_assignment.task.name
 
-        # Check if a ClientProjectProgress entry with the same criteria already exists
-        client_project_progress, created = ClientProjectProgress.objects.get_or_create(
+        # Use update_or_create to avoid duplicates
+        client_project_progress, created = ClientProjectProgress.objects.update_or_create(
             client_project=client_project_name,
             date=submission_date,
             task=task_name,
             completed_by=request.user.username,  # Use the username
-            work_done=obj.work_done_in_percentage
+            defaults={'work_done': obj.work_done_in_percentage}
         )
 
-        # Update the 'work_done' field, whether the entry was created or not
-        client_project_progress.work_done = obj.work_done_in_percentage
-        client_project_progress.save()
+        # You don't need to update the 'work_done' field manually
+        # It will be updated automatically by update_or_create
 
         super().save_model(request, obj, form, change)
